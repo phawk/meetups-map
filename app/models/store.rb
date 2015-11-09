@@ -6,15 +6,29 @@ class Store < ActiveRecord::Base
 
     fail "Geocoding failed" if result.nil?
 
-    record.street_address = result.address
+    # record.street_address = result.address
     record.lonlat = GEO_FACTORY.point(result.latitude, result.longitude)
   end
 
-  after_validation :geocode, if: ->(obj){ obj.street_address.present? and obj.street_address_changed? }
+  after_validation :geocode, if: :geocoding_neccessary?
 
   # e.g. Store.nearby(54.574997, -5.893822).pluck(:name)
   def self.nearby(lat, lon, distance: 5000)
     Store.where("ST_Distance(lonlat, ST_GeographyFromText('SRID=4326;POINT(:lat :lon)')) < :distance", lat: lat, lon: lon, distance: distance)
+  end
+
+  private
+
+  def geocoding_neccessary?
+    if new_record?
+      missing_coordinates?
+    else
+      street_address_changed?
+    end
+  end
+
+  def missing_coordinates?
+    lonlat.blank?
   end
 end
 
