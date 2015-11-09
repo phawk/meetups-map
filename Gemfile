@@ -11,6 +11,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 gem 'dotenv-rails'
 gem 'active_model_serializers', '~> 0.9.3'
+gem 'httparty'
 
 group :development, :test do
   gem 'byebug'
