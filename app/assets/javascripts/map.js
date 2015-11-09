@@ -27,10 +27,23 @@ function initMap() {
       console.log("Store nearby", data);
       data.stores.forEach(function(store) {
 
+        var infowindow = new google.maps.InfoWindow({
+          content: [
+            "<h1>"+store.name+ "</h1>",
+            "<p>",
+              store.street_address.split("\n").join("<BR>"),
+            "</p>"
+          ].join("\n")
+        });
+
         var marker = new google.maps.Marker({
           map: map,
           position: {lat: store.latitude, lng: store.longitude},
           title: store.name
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
         });
       });
     });
