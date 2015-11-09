@@ -14,5 +14,25 @@ function initMap() {
       position: meLatLon,
       title: 'You are here!'
     });
+
+    // Find nearby stores
+    $.ajax({
+      url: "/stores/nearby",
+      type: "GET",
+      data: {
+        lat: meLatLon.lat,
+        lon: meLatLon.lng
+      }
+    }).then(function(data) {
+      console.log("Store nearby", data);
+      data.stores.forEach(function(store) {
+
+        var marker = new google.maps.Marker({
+          map: map,
+          position: {lat: store.latitude, lng: store.longitude},
+          title: store.name
+        });
+      });
+    });
   });
 }
