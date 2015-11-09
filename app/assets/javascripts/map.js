@@ -5,7 +5,7 @@ $(function() {
     var map = new google.maps.Map(document.getElementById('map'), {
       center: meLatLon,
       scrollwheel: false,
-      zoom: 10
+      zoom: 11
     });
 
     // Create a marker and set its position.
@@ -32,7 +32,7 @@ $(function() {
           map: map,
           radius: 15000, // 15 km
           editable: false,
-          stroke_weight: 2,
+          stroke_weight: 0,
           fill_opacity: 0.5,
           fill_color: "#000"
       });
