@@ -1,0 +1,30 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: $font-stack;
+  margin: 0;
+  color: #767471;
+}
+
+a {
+  color: #006FF0;
+
+  &:hover {
+    color: #3790F8;
+  }
+}
+
+.icon {
+  display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+}
+
+.icon-location {
+  background-image: image-url("marker.png");
+  background-size: 14px 20px;
+}

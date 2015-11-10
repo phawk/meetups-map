@@ -42,9 +42,13 @@ $(function() {
           }
         }).then(function(data) {
 
-          var meetups_html = JST["templates/meetups"]({meetups: data.meetups});
-          $(".meetups-list").html(meetups_html);
+          var titleHtml = JST["templates/results_title"]({meta: data.meta, city: city}),
+              meetupsHtml = JST["templates/meetups"]({meetups: data.meetups});
 
+          $(".pagetitle").html(titleHtml);
+          $(".meetups-list").html(meetupsHtml);
+
+          // Append markers to the map
           data.meetups.forEach(function(meetup) {
 
             var infowindow = new google.maps.InfoWindow({

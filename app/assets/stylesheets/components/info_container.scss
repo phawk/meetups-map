@@ -1,0 +1,21 @@
+.info-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 50vh;
+
+  .pagetitle {
+    padding: 25px 40px;
+    margin: 0;
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #343230;
+  }
+}
+
+@media only screen and (min-width: 1023px) {
+  .info-container {
+    width: 50%;
+    padding-bottom: 0;
+  }
+}

@@ -1,0 +1,47 @@
+.meetups-list {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & > li {
+      margin: 0;
+      padding: 25px 40px;
+      border-top: solid 1px #efefef;
+      position: relative;
+    }
+  }
+
+  img {
+    display: block;
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    left: 40px;
+    transform: translateY(-50%);
+  }
+
+  .info {
+    margin-left: 70px;
+
+    h3 {
+      margin: 0 0 4px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    small {
+      color: #767471;
+    }
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
