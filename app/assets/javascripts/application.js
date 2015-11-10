@@ -10,7 +10,9 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require underscore-min
 //= require jquery
 //= require jquery_ujs
 //= require gmap.inverted.circle
-//= require_tree .
+//= require_tree ./templates
+//= require_tree ./features

@@ -1,0 +1,23 @@
+<ul>
+  <% _.each(meetups, function(meetup) { %>
+    <li>
+      <% if (meetup.photo) { %>
+        <img src="<%= meetup.photo %>" alt="<%= meetup.name %>" width="50">
+      <% } else { %>
+        <span class="no-img"></span>
+      <% } %>
+      <div class="info">
+        <h3>
+          <a href="<%= meetup.link %>" target="_blank">
+            <%= meetup.name %>
+            <small>
+              <%= meetup.category %>
+            </small>
+          </a>
+        </h3>
+
+        <p>Organized by: <%= meetup.organizer_name %></p>
+      </div>
+    </li>
+  <% }) %>
+</ul>

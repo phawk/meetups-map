@@ -1,6 +1,7 @@
 $(function() {
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    var meLatLon = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+  // navigator.geolocation.getCurrentPosition(function(pos) {
+    // var meLatLon = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+    var meLatLon = {lat: 51.5073, lng: -0.12274};
 
     var map = new google.maps.Map(document.getElementById('map'), {
       center: meLatLon,
@@ -15,22 +16,11 @@ $(function() {
       title: 'You are here!'
     });
 
-    // var searchRadius = new google.maps.Circle({
-    //   strokeColor: '#FF0000',
-    //   strokeOpacity: 0.8,
-    //   strokeWeight: 2,
-    //   fillColor: '#FF0000',
-    //   fillOpacity: 0.35,
-    //   map: map,
-    //   center: meLatLon,
-    //   radius: 15000
-    // });
-
     try {
       var searchRadius = new InvertedCircle({
           center: map.getCenter(),
           map: map,
-          radius: 15000, // 15 km
+          radius: 50000, // 50 km
           editable: false,
           stroke_weight: 0,
           fill_opacity: 0.5,
@@ -42,29 +32,27 @@ $(function() {
 
     // Find nearby stores
     $.ajax({
-      url: "/stores/nearby",
+      url: "/meetups/nearby",
       type: "GET",
       data: {
         lat: meLatLon.lat,
         lon: meLatLon.lng
       }
     }).then(function(data) {
-      console.log("Store nearby", data);
-      data.stores.forEach(function(store) {
+
+      var meetups_html = JST["templates/meetups"]({meetups: data.meetups});
+      $(".meetups-list").html(meetups_html);
+
+      data.meetups.forEach(function(meetup) {
 
         var infowindow = new google.maps.InfoWindow({
-          content: [
-            "<h1>"+store.name+ "</h1>",
-            "<p>",
-              store.street_address.split("\n").join("<BR>"),
-            "</p>"
-          ].join("\n")
+          content: JST["templates/meetup_marker_popup"]({meetup: meetup})
         });
 
         var marker = new google.maps.Marker({
           map: map,
-          position: {lat: store.latitude, lng: store.longitude},
-          title: store.name
+          position: {lat: meetup.latitude, lng: meetup.longitude},
+          title: meetup.name
         });
 
         marker.addListener('click', function() {
@@ -72,5 +60,5 @@ $(function() {
         });
       });
     });
-  });
+  // });
 });

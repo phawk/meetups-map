@@ -12,6 +12,8 @@ gem 'jquery-rails'
 gem 'dotenv-rails'
 gem 'active_model_serializers', '~> 0.9.3'
 gem 'httparty'
+gem 'kaminari'
+gem 'ejs'
 
 group :development, :test do
   gem 'byebug'

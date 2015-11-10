@@ -2,7 +2,7 @@ class FetchMeetupsService
   def initialize
   end
 
-  def by_topic(topic = "Ruby")
+  def by_topic(topic = "softwaredev")
     load_results_by_url("https://api.meetup.com/2/groups?topic=#{topic}&key=#{api_key}")
   end
 
