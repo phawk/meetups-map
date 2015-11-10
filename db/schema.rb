@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151109232356) do
+ActiveRecord::Schema.define(version: 20151110003551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,15 +38,5 @@ ActiveRecord::Schema.define(version: 20151109232356) do
   end
 
   add_index "meetups", ["coords"], name: "index_meetups_on_coords", using: :gist
-
-  create_table "stores", force: :cascade do |t|
-    t.string    "name"
-    t.text      "street_address"
-    t.geography "lonlat",         limit: {:srid=>4326, :type=>"point", :geographic=>true}
-    t.datetime  "created_at",                                                              null: false
-    t.datetime  "updated_at",                                                              null: false
-  end
-
-  add_index "stores", ["lonlat"], name: "index_stores_on_lonlat", using: :gist
 
 end
