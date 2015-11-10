@@ -1,74 +1,82 @@
 $(function() {
-  var youMarker;
+  var meetupMarkers = {},
+      youMarker, map;
 
-  // Default London
-  var meLatLon = {lat: 51.5073, lng: -0.12274};
-
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: meLatLon,
+  var map = window.map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 51.5073, lng: -0.12274},
     scrollwheel: false,
     zoom: 11
   });
 
-  // Create a marker and set its position.
-  youMarker = new google.maps.Marker({
-    map: map,
-    position: meLatLon,
-    title: 'You are here!'
-  });
+  function loadMeetups(city) {
+    var geocoder = new google.maps.Geocoder();
 
-  $.ajax({
-    url: "/meetups/nearby",
-    type: "GET",
-    data: {
-      lat: meLatLon.lat,
-      lon: meLatLon.lng
-    }
-  }).then(function(data) {
+    // Remove all markers
+    if (youMarker) youMarker.setMap(null);
 
-    var meetups_html = JST["templates/meetups"]({meetups: data.meetups});
-    $(".meetups-list").html(meetups_html);
-
-    data.meetups.forEach(function(meetup) {
-
-      var infowindow = new google.maps.InfoWindow({
-        content: JST["templates/meetup_marker_popup"]({meetup: meetup})
-      });
-
-      var marker = new google.maps.Marker({
-        map: map,
-        position: {lat: meetup.latitude, lng: meetup.longitude},
-        title: meetup.name
-      });
-
-      marker.addListener('click', function() {
-        infowindow.open(map, marker);
-      });
+    _.each(meetupMarkers, function(marker, meetupId) {
+      marker.setMap(null);
     });
-  });
 
-  $(document).on("submit", ".search-form", function(ev) {
-    var city = $("#location").val(),
-        geocoder = new google.maps.Geocoder();
+    meetupMarkers = {};
 
     geocoder.geocode({ 'address': city }, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        map.setCenter(results[0].geometry.location);
-        console.log(results[0]);
+        var location = results[0].geometry.location;
 
-        if (youMarker) youMarker.setMap(null);
+        map.setCenter(location);
+        map.setZoom(11);
+
         youMarker = new google.maps.Marker({
             map: map,
-            position: results[0].geometry.location,
+            position: location,
             title: 'You are here!'
+        });
+
+        $.ajax({
+          url: "/meetups/nearby",
+          type: "GET",
+          data: {
+            lat: location.lat,
+            lon: location.lng
+          }
+        }).then(function(data) {
+
+          var meetups_html = JST["templates/meetups"]({meetups: data.meetups});
+          $(".meetups-list").html(meetups_html);
+
+          data.meetups.forEach(function(meetup) {
+
+            var infowindow = new google.maps.InfoWindow({
+              content: JST["templates/meetup_marker_popup"]({meetup: meetup})
+            });
+
+            var marker = new google.maps.Marker({
+              map: map,
+              position: {lat: meetup.latitude, lng: meetup.longitude},
+              title: meetup.name
+            });
+
+            meetupMarkers[meetup.id] = marker;
+
+            marker.addListener('click', function() {
+              infowindow.open(map, marker);
+            });
+          });
         });
 
       } else {
         alert("Geocode was not successful for the following reason: " + status);
       }
     });
+  }
+
+  $(document).on("submit", ".search-form", function(ev) {
+    loadMeetups($("#location").val());
 
     return false;
   });
+
+  loadMeetups("London");
 
 });
