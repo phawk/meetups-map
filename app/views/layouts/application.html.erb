@@ -7,9 +7,7 @@
 </head>
 <body>
 
-  <div class="container">
-    <%= yield %>
-  </div>
+  <%= yield %>
 
   <script src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>"></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>

@@ -30,7 +30,6 @@ $(function() {
       console.error(e);
     }
 
-    // Find nearby stores
     $.ajax({
       url: "/meetups/nearby",
       type: "GET",

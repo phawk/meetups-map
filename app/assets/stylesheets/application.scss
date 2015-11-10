@@ -1,9 +1,59 @@
-body {
-  font-family: 'Open Sans';
+html, body {
+  height: 100%;
 }
 
-.container {
-  padding: 40px;
-  max-width: 900px;
-  margin: 0 auto;
+body {
+  font-family: 'Open Sans';
+  margin: 0;
+}
+
+.info-container {
+  width: 50%;
+  box-sizing: border-box;
+
+  .pagetitle {
+    padding: 25px 40px;
+    margin: 0;
+    font-size: 19px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+}
+
+#map {
+  position: fixed !important;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+}
+
+.meetups-list {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & > li {
+      margin: 0;
+      padding: 25px 40px;
+      border-top: solid 1px #efefef;
+    }
+  }
+
+  img {
+    display: block;
+    width: 50px;
+    float: left;
+  }
+
+  .info {
+    margin-left: 70px;
+
+    h3, p {
+      margin: 0 0 10px;
+    }
+  }
 }

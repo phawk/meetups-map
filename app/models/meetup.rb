@@ -1,8 +1,14 @@
 class Meetup < ActiveRecord::Base
   GEO_FACTORY = RGeo::Geographic.spherical_factory(srid: 4326)
 
+  attr_accessor :target
+
   def self.nearby(coord, distance: 5000)
     Meetup.where("ST_Distance(meetups.coords, ST_GeographyFromText('SRID=4326;POINT(:lat :lon)')) < :distance", lat: coord.lat, lon: coord.lon, distance: distance)
+  end
+
+  def to_coord
+    Coord.new(coords.x, coords.y) unless missing_coordinates?
   end
 
   private
