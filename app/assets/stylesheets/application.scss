@@ -8,8 +8,9 @@ body {
 }
 
 .info-container {
-  width: 50%;
+  width: 100%;
   box-sizing: border-box;
+  padding-bottom: 50vh;
 
   .pagetitle {
     padding: 25px 40px;
@@ -22,12 +23,12 @@ body {
 
 #map {
   position: fixed !important;
-  left: 50%;
-  top: 0;
+  left: 0;
+  top: 50%;
   bottom: 0;
   right: 0;
-  width: 50%;
-  height: 100%;
+  width: 100%;
+  height: 50%;
 }
 
 .meetups-list {
@@ -55,5 +56,23 @@ body {
     h3, p {
       margin: 0 0 10px;
     }
+  }
+}
+
+
+@media only screen and (min-width: 1023px) {
+  .info-container {
+    width: 50%;
+    padding-bottom: 0;
+  }
+
+  #map {
+    position: fixed !important;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
   }
 }
