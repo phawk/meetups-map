@@ -2,7 +2,7 @@
 lock '3.4.0'
 
 set :application, 'meetupsmap'
-set :repo_url, 'git@bitbucket.org:alternatelabs/meetup-map.git'
+set :repo_url, 'git@github.com:alternatelabs/meetups-map.git'
 set :deploy_to, '/var/www/meetups-map'
 set :log_level, :info
 set :linked_files, %w(.env)
