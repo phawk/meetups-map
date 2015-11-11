@@ -1,6 +1,6 @@
 class MeetupsController < ApplicationController
   def nearby
-    coord = Coord.new(params[:lat], params[:lon])
+    coord = Coord.new(params[:lon], params[:lat])
     nearby_meetups = Meetup.nearby(coord, distance: 50000).page(params[:page]).per(50)
     nearby_meetups.map do |meetup|
       meetup.target = coord

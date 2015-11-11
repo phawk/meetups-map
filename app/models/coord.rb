@@ -1,14 +1,14 @@
 class Coord
   GEO_FACTORY = RGeo::Geographic.spherical_factory(srid: 4326)
 
-  attr_reader :lat, :lon
+  attr_reader :lon, :lat
 
-  def initialize(lat, lon)
-    @lat, @lon = lat.to_f, lon.to_f
+  def initialize(lon, lat)
+    @lon, @lat = lon.to_f, lat.to_f
   end
 
   def to_geo_point
-    GEO_FACTORY.point(lat, lon)
+    GEO_FACTORY.point(lon, lat)
   end
 
   def distance_to(coord)

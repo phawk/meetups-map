@@ -8,10 +8,10 @@ class MeetupSerializer < ActiveModel::Serializer
   end
 
   def latitude
-    object.coords.x
+    object.coords.y
   end
 
   def longitude
-    object.coords.y
+    object.coords.x
   end
 end

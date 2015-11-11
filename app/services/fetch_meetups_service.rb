@@ -26,7 +26,7 @@ class FetchMeetupsService
           link: result["link"],
           rating: result["rating"],
           members_count: result["members"],
-          coords: Meetup::GEO_FACTORY.point(result["lat"], result["lon"])
+          coords: Meetup::GEO_FACTORY.point(result["lon"], result["lat"])
         }
 
         if result["category"]
