@@ -1,19 +1,26 @@
 $(function() {
   var meetupMarkers = {},
-      youMarker, map;
+      map;
 
   var map = window.map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 51.5073, lng: -0.12274},
     scrollwheel: false,
-    zoom: 11
+    zoom: 11,
+    // styles:[{stylers:[{lightness:7},{saturation:-20}]}]
   });
+
+  var markerImage = {
+      url: "<%= asset_path("map-marker.png") %>",
+      size: new google.maps.Size(40, 54),
+      scaledSize: new google.maps.Size(20, 27),
+      origin: new google.maps.Point(0,0),
+      anchor: new google.maps.Point(10, 30)
+  };
 
   function loadMeetups(city) {
     var geocoder = new google.maps.Geocoder();
 
     // Remove all markers
-    if (youMarker) youMarker.setMap(null);
-
     _.each(meetupMarkers, function(marker, meetupId) {
       marker.setMap(null);
     });
@@ -26,12 +33,6 @@ $(function() {
 
         map.setCenter(location);
         map.setZoom(11);
-
-        youMarker = new google.maps.Marker({
-            map: map,
-            position: location,
-            title: 'You are here!'
-        });
 
         $.ajax({
           url: "/meetups/nearby",
@@ -52,13 +53,14 @@ $(function() {
           data.meetups.forEach(function(meetup) {
 
             var infowindow = new google.maps.InfoWindow({
-              content: JST["templates/meetup_marker_popup"]({meetup: meetup})
+              content: JST["templates/meetup_marker_popup"]({meetup: meetup}),
+              pixelOffset: new google.maps.Size(-10, 0)
             });
 
             var marker = new google.maps.Marker({
               map: map,
               position: {lat: meetup.latitude, lng: meetup.longitude},
-              title: meetup.name
+              icon: markerImage
             });
 
             meetupMarkers[meetup.id] = marker;
