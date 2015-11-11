@@ -4,7 +4,7 @@ class Meetup < ActiveRecord::Base
   attr_accessor :target
 
   def self.nearby(coord, distance: 5000)
-    Meetup.where("ST_Distance(meetups.coords, ST_GeographyFromText('SRID=4326;POINT(:lat :lon)')) < :distance", lat: coord.lat, lon: coord.lon, distance: distance)
+    Meetup.where("ST_DWithin(meetups.coords, ST_GeographyFromText('SRID=4326;POINT(:lat :lon)'), :distance)", lat: coord.lat, lon: coord.lon, distance: distance)
   end
 
   def to_coord
