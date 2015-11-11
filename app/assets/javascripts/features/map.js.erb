@@ -1,5 +1,7 @@
 $(function() {
   var meetupMarkers = {},
+      currentPage = 1,
+      currentLocation,
       map;
 
   var map = window.map = new google.maps.Map(document.getElementById('map'), {
@@ -17,13 +19,16 @@ $(function() {
       anchor: new google.maps.Point(10, 30)
   };
 
-  function loadMeetups(city) {
+  function loadMeetups(city, loadMore, callback) {
     var geocoder = new google.maps.Geocoder();
 
-    // Remove all markers
-    _.each(meetupMarkers, function(marker, meetupId) {
-      marker.setMap(null);
-    });
+    if (! loadMore) {
+      // Remove all markers
+      _.each(meetupMarkers, function(marker, meetupId) {
+        marker.setMap(null);
+      });
+      $(".meetups-list ul").html("");
+    }
 
     meetupMarkers = {};
 
@@ -38,16 +43,20 @@ $(function() {
           url: "/meetups/nearby",
           type: "GET",
           data: {
+            page: currentPage,
             lat: location.lat,
             lon: location.lng
           }
         }).then(function(data) {
 
-          var titleHtml = JST["templates/results_title"]({meta: data.meta, city: city}),
-              meetupsHtml = JST["templates/meetups"]({meetups: data.meetups});
+          var showingCount = $(".meetups-list").find("li").length + data.meta.count,
+              titleHtml = JST["templates/results_title"]({meta: data.meta, city: city}),
+              meetupsHtml = JST["templates/meetups"]({meetups: data.meetups}),
+              metaHtml = JST["templates/results_meta"]({meta: data.meta, showing_count: showingCount });
 
           $(".pagetitle").html(titleHtml);
-          $(".meetups-list").html(meetupsHtml);
+          $(".results-meta").html(metaHtml);
+          $(".meetups-list ul").append(meetupsHtml);
 
           // Append markers to the map
           data.meetups.forEach(function(meetup) {
@@ -69,6 +78,8 @@ $(function() {
               infowindow.open(map, marker);
             });
           });
+
+          callback && callback.call();
         });
 
       } else {
@@ -77,12 +88,26 @@ $(function() {
     });
   }
 
+  $(document).on("click", ".load-more-results:not(.searching)", function(ev) {
+    ev.preventDefault();
+
+    $(".load-more-results").addClass("searching").html("Loading&hellip;");
+
+    currentPage++;
+    loadMeetups(currentLocation, true, function() {
+      $(".load-more-results").removeClass("searching").html("Load more&hellip;");
+    });
+  });
+
   $(document).on("submit", ".search-form", function(ev) {
-    loadMeetups($("#location").val());
+    currentPage = 1;
+    currentLocation = $("#location").val()
+    loadMeetups(currentLocation);
 
     return false;
   });
 
+  currentLocation = "London";
   loadMeetups("London");
 
 });
