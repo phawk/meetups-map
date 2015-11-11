@@ -36,8 +36,10 @@ $(function() {
       if (status == google.maps.GeocoderStatus.OK) {
         var location = results[0].geometry.location;
 
-        map.setCenter(location);
-        map.setZoom(11);
+        if (! loadMore) {
+          map.setCenter(location);
+          map.setZoom(11);
+        }
 
         $.ajax({
           url: "/meetups/nearby",
