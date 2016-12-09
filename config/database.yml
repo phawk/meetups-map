@@ -81,6 +81,6 @@ test:
 #
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  url: <%= ENV['POSTGIS_URL'] %>
   adapter: postgis
   schema_search_path: public, postgis
