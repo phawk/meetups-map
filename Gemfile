@@ -9,14 +9,17 @@ gem 'geocoder'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
-gem 'dotenv-rails'
 gem 'active_model_serializers', '~> 0.9.3'
 gem 'httparty'
 gem 'kaminari'
 gem 'ejs'
 
+gem 'puma'
+gem 'rack-timeout'
+
 group :development, :test do
   gem 'byebug'
+  gem 'dotenv-rails'
 end
 
 group :development do
@@ -30,3 +33,6 @@ group :development do
   gem 'capistrano-passenger', '~> 0.1.1'
 end
 
+group :production do
+  gem 'rails_12factor'
+end
